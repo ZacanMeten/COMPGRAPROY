@@ -25,17 +25,18 @@ public class Tester {
         
         //OpenGL expects vertices to be defined counter clockwise by default
         float[] vertices ={
-            //Triangulo inferior izquierdo
-            -0.5f, 0.5f, 0f,
-            -0.5f, -0.5f, 0f,
-            0.5f, -0.5f, 0f,
-            //Triangulo superior derecho
-            0.5f, -0.5f, 0f,
-            0.5f, 0.5f, 0f,
-            -0.5f, 0.5f, 0f
+            -0.5f, 0.5f, 0f,    //V0
+            -0.5f, -0.5f, 0f,   //V1
+            0.5f, -0.5f, 0f,    //V2
+            0.5f, 0.5f, 0f      //v3
         };
         
-        ModeloRaw modelo = loader.cargarToVAO(vertices);
+        int[] indices = {
+            0,1,3,  //Triangulo superior izq(V0,V1,V3)
+            3,1,2    //Triangulo inferior der(V2,V1,V2)
+        };
+        
+        ModeloRaw modelo = loader.cargarToVAO(vertices,indices);
         
                 
         while(!Display.isCloseRequested()){

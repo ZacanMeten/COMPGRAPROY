@@ -6,6 +6,7 @@
 package Display;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.BufferUtils;
@@ -28,11 +29,14 @@ public class Cargador {
       @return el modelo cargado  
     */
     
-    public ModeloRaw cargarToVAO(float[] posiciones){
+    public ModeloRaw cargarToVAO(float[] posiciones, int[] indices){
         int vaoID = crearVAO();
+        
+        enlazarIndiceBuffer(indices);
+        
         almacenarDataEnListaAtributos(0, posiciones);
         desligarVAO();
-        return new ModeloRaw(vaoID, posiciones.length / 3); //cada vertex tiene 3 atributos
+        return new ModeloRaw(vaoID, indices.length);
     }
     
     /* Borra todas la VAOs y VBOs cuando el juego este cerrado. VAOs Y VBOs estan localizados en la memoria de video*/
@@ -82,6 +86,21 @@ public class Cargador {
 	buffer.put(data);
 	buffer.flip();
 	return buffer;
+    }
+    
+    //IndexBuffer
+    private void enlazarIndiceBuffer(int[] indices){
+        int vboID = GL15.glGenBuffers();
+        vbos.add(vboID);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
+        IntBuffer buffer = almacenarDataEnIntBuffer(indices);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+    }
+    private IntBuffer almacenarDataEnIntBuffer(int[] data){
+        IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+        buffer.put(data);
+        buffer.flip();
+        return buffer;        
     }
     
     /* Desliga el VAO despues que hayamos terminado de usarlo. Si queremos usarlo o editarlo

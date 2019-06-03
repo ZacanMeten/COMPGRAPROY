@@ -13,17 +13,17 @@ import org.lwjgl.opengl.GL30;
  *
  * @author reant
  */
-public class Renderer {
+public class Renderizador {
     
     public void preparar(){
-        GL11.glClearColor(1, 0, 0, 1); //RGB Alpha
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glClearColor(1, 0, 0, 1); //RGB Alpha
     }
     
     public void render(ModeloRaw modelo){
         GL30.glBindVertexArray(modelo.getVaoID());
         GL20.glEnableVertexAttribArray(0);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, modelo.getVerticeCount());
+        GL11.glDrawElements(GL11.GL_TRIANGLES, modelo.getVerticeCount(), GL11.GL_UNSIGNED_INT, 0);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
     }

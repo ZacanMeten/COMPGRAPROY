@@ -27,8 +27,7 @@ public class ManagerDisplay {
         
         ContextAttribs attribs = new ContextAttribs(3,2);
         attribs.withForwardCompatible(true);
-        attribs.withProfileCore(true);
-        
+        attribs.withProfileCore(true);        
         
         try{        
             Display.setDisplayMode(new DisplayMode(Ancho, Alto));
