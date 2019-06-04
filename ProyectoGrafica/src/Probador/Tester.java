@@ -43,6 +43,7 @@ public class Tester {
             //Logica del Juego
             
             //Renderizado
+            renderer.preparar();
             renderer.render(modelo);
             ManagerDisplay.actualizarDisplay();
         }
