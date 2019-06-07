@@ -3,17 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Display;
+package RenderEngine;
 
+import Modelos.ModeloRaw;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 /**
  *
@@ -24,19 +32,37 @@ public class Cargador {
     private List<Integer> vaos = new ArrayList<Integer>();
     private List<Integer> vbos = new ArrayList<Integer>();
     
+    private List<Integer> texturas = new ArrayList<Integer>();
+    
     /* Crea una VAO y al almacena los datos de posicion de los vertices en el atributo 0 de la VAO
       @parametro posiciones
       @return el modelo cargado  
     */
     
-    public ModeloRaw cargarToVAO(float[] posiciones, int[] indices){
+    public ModeloRaw cargarToVAO(float[] posiciones,float[] CoordenadasTextura, int[] indices){
         int vaoID = crearVAO();
         
         enlazarIndiceBuffer(indices);
-        
-        almacenarDataEnListaAtributos(0, posiciones);
+        almacenarDataEnListaAtributos(0, 3, posiciones);        
+        almacenarDataEnListaAtributos(1, 2, CoordenadasTextura);
         desligarVAO();
         return new ModeloRaw(vaoID, indices.length);
+    }
+    
+    //Implementacion para Texturas
+    public int cargarTextura(String nombreArchivo){
+        Texture textura = null;
+        try {
+            textura = TextureLoader.getTexture("PNG", new FileInputStream("res/"+nombreArchivo+".png") );
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+        int TextureID = textura.getTextureID(); //Recupera el id de la textura cargada
+        texturas.add(TextureID);    //Ingresa el id de la textura cargada en la lista texturas
+        return TextureID;
     }
     
     /* Borra todas la VAOs y VBOs cuando el juego este cerrado. VAOs Y VBOs estan localizados en la memoria de video*/
@@ -46,6 +72,9 @@ public class Cargador {
         }
         for(int vbo : vbos){
             GL15.glDeleteBuffers(vbo);
+        }
+        for(int tex : texturas){
+            GL11.glDeleteTextures(tex);
         }
     }
     
@@ -71,13 +100,13 @@ public class Cargador {
     * 
     * 
     */
-    private void almacenarDataEnListaAtributos(int numeroAtributo, float[] data){
+    private void almacenarDataEnListaAtributos(int numeroAtributo, int tamañoCoordenada, float[] data){
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
         FloatBuffer buffer = almacenarDataEnFloatBuffer(data);
 	GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-	GL20.glVertexAttribPointer(numeroAtributo, 3, GL11.GL_FLOAT, false, 0, 0);
+	GL20.glVertexAttribPointer(numeroAtributo, tamañoCoordenada, GL11.GL_FLOAT, false, 0, 0);
 	GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
     
