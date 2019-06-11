@@ -24,16 +24,22 @@ public class Camara {
     
     public void Mover(){
         if(Keyboard.isKeyDown( Keyboard.KEY_S )){
-            posicion.z -= 0.02f; 
+            posicion.z += 0.02f; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_W )){
-            posicion.z += 0.02f; 
+            posicion.z -= 0.02f; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_A )){
             posicion.x -= 0.02f; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_D )){
             posicion.x += 0.02f; 
+        }
+        if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD8 )){
+            posicion.y += 0.02f; 
+        }
+        if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD2 )){
+            posicion.y -= 0.02f; 
         }
     }
 

@@ -99,7 +99,7 @@ public class OBJcargador {
             indicesArray[i] = indices.get(i);
         }
         
-        return loader.cargarToVAO(verticesArray, texturasArray, indicesArray);
+        return loader.cargarToVAO(verticesArray, texturasArray, normalsArray,indicesArray);
     }
     
     public static void procesarVertice(String[] verticeData, List<Integer> indices, List<Vector2f> texturas, List<Vector3f> normals, float[] texturaArray, float[] normalsArray){
@@ -111,6 +111,8 @@ public class OBJcargador {
         texturaArray[currentVerticePuntero*2 + 1] = 1 - currentTexto.y;
         
         Vector3f currentNorm = normals.get( Integer.parseInt( verticeData[2]) - 1);
+        
+        //Carga de los vectores Normales, aquellos que reflejas a donde apunta la cara de nu objeto
         normalsArray[currentVerticePuntero*3] = currentNorm.x;
         normalsArray[currentVerticePuntero*3 + 1] = currentNorm.y;
         normalsArray[currentVerticePuntero*3 + 2] = currentNorm.z;

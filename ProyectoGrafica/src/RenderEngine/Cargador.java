@@ -39,12 +39,13 @@ public class Cargador {
       @return el modelo cargado  
     */
     
-    public ModeloRaw cargarToVAO(float[] posiciones,float[] CoordenadasTextura, int[] indices){
+    public ModeloRaw cargarToVAO(float[] posiciones,float[] CoordenadasTextura, float[] normales, int[] indices){
         int vaoID = crearVAO();
         
         enlazarIndiceBuffer(indices);
         almacenarDataEnListaAtributos(0, 3, posiciones);        
         almacenarDataEnListaAtributos(1, 2, CoordenadasTextura);
+        almacenarDataEnListaAtributos(2, 3, normales);
         desligarVAO();
         return new ModeloRaw(vaoID, indices.length);
     }

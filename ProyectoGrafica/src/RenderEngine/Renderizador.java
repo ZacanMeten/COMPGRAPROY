@@ -39,15 +39,17 @@ public class Renderizador {
     public void preparar(){
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(0, 0, 0, 1); //RGB Alpha
+        GL11.glClearColor(1, 1, 1, 1); //RGB Alpha - COLOR DE FONDO
     }
     
     public void render(Entidad entidad, StaticShader shader){
         ModeloTexturizado modelo = entidad.getModelo();
         ModeloRaw modeloR = modelo.getRawmodel();
         GL30.glBindVertexArray(modeloR.getVaoID());
+        //Habilita las VAO
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
+        GL20.glEnableVertexAttribArray(2);
         
         Matrix4f matrizTransformacion = Matematicas.crearTransformationMatrix(entidad.getPosicion(), entidad.getRotX(), entidad.getRotY(), entidad.getRotZ(), entidad.getEscala());
         shader.cargarTransformationMatrix(matrizTransformacion);
@@ -55,8 +57,11 @@ public class Renderizador {
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, modelo.getTexture().getTexturaID());
         GL11.glDrawElements(GL11.GL_TRIANGLES, modeloR.getVerticeCount(), GL11.GL_UNSIGNED_INT, 0);
+        
+        //Termina con el uso de las VAO
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
+        GL20.glDisableVertexAttribArray(2);
         GL30.glBindVertexArray(0);
     }
     

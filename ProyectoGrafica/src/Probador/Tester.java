@@ -11,6 +11,7 @@ import RenderEngine.ManagerDisplay;
 import Modelos.ModeloRaw;
 import RenderEngine.Renderizador;
 import Entidades.Entidad;
+import Entidades.Luz;
 import Modelos.ModeloTexturizado;
 import RenderEngine.OBJcargador;
 import Sombreadores.StaticShader;
@@ -32,11 +33,12 @@ public class Tester {
         
         Renderizador renderer = new Renderizador(shader);
         
-        ModeloRaw modelo = OBJcargador.cargarOBJmodel("stall", loader);
+        ModeloRaw modelo = OBJcargador.cargarOBJmodel("Monstruo", loader);
         
-        ModeloTexturizado staticModel = new ModeloTexturizado(modelo, new ModelTexture( loader.cargarTextura("stallTexture") ));
+        ModeloTexturizado staticModel = new ModeloTexturizado(modelo, new ModelTexture( loader.cargarTextura("MonstruoTexture2") ));
         
-        Entidad entidad = new Entidad(staticModel, new Vector3f( 0, -3,-15) , 0, 0, 0, 1);
+        Entidad entidad = new Entidad(staticModel, new Vector3f( 0, 0, -5) , 0, 0, 0, 1);
+        Luz luz = new Luz(new Vector3f(0, 0, -2), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
         
         Camara camara = new Camara();
         
@@ -47,6 +49,7 @@ public class Tester {
             //Renderizado
             renderer.preparar();
             shader.empezar();
+            shader.cargarLuz(luz);
             shader.cargarViewMatrix(camara);
             renderer.render(entidad, shader);
             shader.parar();

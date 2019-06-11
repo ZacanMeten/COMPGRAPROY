@@ -6,6 +6,7 @@
 package Sombreadores;
 
 import Entidades.Camara;
+import Entidades.Luz;
 import Utilidades.Matematicas;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -21,6 +22,8 @@ public class StaticShader extends ShaderProgram{
     private int localizacion_transformationMatrix;
     private int localizacion_projectionMatrix;
     private int localizacion_viewMatrix;
+    private int localizacion_lightPosition;
+    private int localizacion_lightColour;
     
     public StaticShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -30,6 +33,7 @@ public class StaticShader extends ShaderProgram{
     protected void enlazarAtributos() {
         super.enlazarAtributo(0, "position");
         super.enlazarAtributo(1, "textureCoords");
+        super.enlazarAtributo(2, "normal");
     }
 
     @Override
@@ -37,11 +41,19 @@ public class StaticShader extends ShaderProgram{
         localizacion_transformationMatrix = super.getUniformLocation("transformationMatrix");
         localizacion_projectionMatrix = super.getUniformLocation("projectionMatrix");
         localizacion_viewMatrix = super.getUniformLocation("viewMatrix");
+        localizacion_lightPosition = super.getUniformLocation("lightPosition");
+        localizacion_lightColour = super.getUniformLocation("lightColour");
     }
     
     public void cargarTransformationMatrix(Matrix4f matriz){
         super.cargarMatriz(localizacion_transformationMatrix, matriz);
     }
+    
+    public void cargarLuz(Luz luz){
+        super.cargarVector(localizacion_lightPosition, luz.getPosicion());
+        super.cargarVector(localizacion_lightColour, luz.getColor());
+    }
+    
     public void cargarViewMatrix(Camara camara){
         Matrix4f matriz = Matematicas.crearMatrizVista(camara);
         super.cargarMatriz(localizacion_viewMatrix, matriz);
