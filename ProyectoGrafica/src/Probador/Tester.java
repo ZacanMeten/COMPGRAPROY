@@ -13,6 +13,7 @@ import RenderEngine.Renderizador;
 import Entidades.Entidad;
 import Entidades.Luz;
 import Modelos.ModeloTexturizado;
+import RenderEngine.MaestroRenderizador;
 import RenderEngine.OBJcargador;
 import Sombreadores.StaticShader;
 import Texturas.ModelTexture;
@@ -27,11 +28,7 @@ public class Tester {
     
     public static void main(String[] args) {
         ManagerDisplay.crearDisplay();
-        Cargador loader = new Cargador();        
-        //Crear un shader static
-        StaticShader shader = new StaticShader();
-        
-        Renderizador renderer = new Renderizador(shader);
+        Cargador loader = new Cargador();
         
         ModeloRaw modelo = OBJcargador.cargarOBJmodel("Monstruo2", loader);
         
@@ -45,24 +42,18 @@ public class Tester {
         
         Camara camara = new Camara();
         
+        MaestroRenderizador renderer = new MaestroRenderizador();
         while(!Display.isCloseRequested()){
             //Logica del Juego
-            monstruo1.IncrementarRotacion(0, 1, 0);
             camara.Mover();
             //Renderizado
-            renderer.preparar();
-            shader.empezar();
-            shader.cargarLuz(luz);
-            shader.cargarViewMatrix(camara);
-            renderer.render(monstruo1, shader);
-            shader.parar();
+            renderer.procesarEntidad(monstruo1);
+            renderer.renderizar(luz, camara);
             ManagerDisplay.actualizarDisplay();
         }
         
-        shader.limpiar();
-        
+        renderer.limpiar();
         loader.Limpieza();
-        
         ManagerDisplay.cerrarDisplay();
     }
 }
