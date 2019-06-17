@@ -33,25 +33,28 @@ public class Tester {
         
         Renderizador renderer = new Renderizador(shader);
         
-        ModeloRaw modelo = OBJcargador.cargarOBJmodel("Monstruo", loader);
+        ModeloRaw modelo = OBJcargador.cargarOBJmodel("Monstruo2", loader);
         
-        ModeloTexturizado staticModel = new ModeloTexturizado(modelo, new ModelTexture( loader.cargarTextura("MonstruoTexture2") ));
+        ModeloTexturizado staticModel = new ModeloTexturizado(modelo, new ModelTexture( loader.cargarTextura("MonsTexture") ));
+        ModelTexture textura = staticModel.getTexture();
+        textura.setBrilloDamper(10); 
+        textura.setReflectividad(1); //Set nivel de la reflectividad
         
-        Entidad entidad = new Entidad(staticModel, new Vector3f( 0, 0, -5) , 0, 0, 0, 1);
-        Luz luz = new Luz(new Vector3f(0, 0, -2), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
+        Entidad monstruo1 = new Entidad(staticModel, new Vector3f( 0, 0, -5) , 0, 0, 0, 1);
+        Luz luz = new Luz(new Vector3f(5, 5, 5), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
         
         Camara camara = new Camara();
         
         while(!Display.isCloseRequested()){
             //Logica del Juego
-            entidad.IncrementarRotacion(0, 1, 0);
+            monstruo1.IncrementarRotacion(0, 1, 0);
             camara.Mover();
             //Renderizado
             renderer.preparar();
             shader.empezar();
             shader.cargarLuz(luz);
             shader.cargarViewMatrix(camara);
-            renderer.render(entidad, shader);
+            renderer.render(monstruo1, shader);
             shader.parar();
             ManagerDisplay.actualizarDisplay();
         }

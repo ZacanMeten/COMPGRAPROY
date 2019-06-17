@@ -9,6 +9,7 @@ import Entidades.Entidad;
 import Modelos.ModeloRaw;
 import Modelos.ModeloTexturizado;
 import Sombreadores.StaticShader;
+import Texturas.ModelTexture;
 import Utilidades.Matematicas;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -39,7 +40,7 @@ public class Renderizador {
     public void preparar(){
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(1, 1, 1, 1); //RGB Alpha - COLOR DE FONDO
+        GL11.glClearColor(0.5f, 0.5f, 0.5f, 1); //RGB Alpha - COLOR DE FONDO
     }
     
     public void render(Entidad entidad, StaticShader shader){
@@ -53,7 +54,11 @@ public class Renderizador {
         
         Matrix4f matrizTransformacion = Matematicas.crearTransformationMatrix(entidad.getPosicion(), entidad.getRotX(), entidad.getRotY(), entidad.getRotZ(), entidad.getEscala());
         shader.cargarTransformationMatrix(matrizTransformacion);
-                
+        
+        //Antes de renderizar algo se tiene  que cargar los valores de reflectividad y brillo
+        ModelTexture textura = modelo.getTexture();
+        shader.cargarBrilloVariable(textura.getBrilloDamper(), textura.getReflectividad());
+        
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, modelo.getTexture().getTexturaID());
         GL11.glDrawElements(GL11.GL_TRIANGLES, modeloR.getVerticeCount(), GL11.GL_UNSIGNED_INT, 0);

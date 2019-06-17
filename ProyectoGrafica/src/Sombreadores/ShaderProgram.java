@@ -5,7 +5,6 @@
  */
 package Sombreadores;
 
-import com.sun.media.jfxmedia.AudioClip;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.nio.FloatBuffer;

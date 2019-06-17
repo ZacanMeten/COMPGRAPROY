@@ -11,6 +11,8 @@ package Texturas;
  */
 public class ModelTexture {
     private int texturaID;
+    private float brilloDamper;
+    private float reflectividad;
 
     public ModelTexture(int texturaID) {
         this.texturaID = texturaID;
@@ -19,4 +21,21 @@ public class ModelTexture {
     public int getTexturaID() {
         return texturaID;
     }
+
+    public float getBrilloDamper() {
+        return brilloDamper;
+    }
+
+    public void setBrilloDamper(float brilloDamper) {
+        this.brilloDamper = brilloDamper;
+    }
+
+    public float getReflectividad() {
+        return reflectividad;
+    }
+
+    public void setReflectividad(float reflectividad) {
+        this.reflectividad = reflectividad;
+    }
+    
 }
