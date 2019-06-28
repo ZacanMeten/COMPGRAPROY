@@ -13,8 +13,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -60,6 +58,7 @@ public class Cargador {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        
         
         int TextureID = textura.getTextureID(); //Recupera el id de la textura cargada
         texturas.add(TextureID);    //Ingresa el id de la textura cargada en la lista texturas

@@ -13,34 +13,52 @@ import org.lwjgl.util.vector.Vector3f;
  * @author reant
  */
 public class Camara {
-    private Vector3f posicion = new Vector3f(0,0,0);
-    private float pitch;
-    private float yaw;      //Derecha o Izquierda
-    private float roll;         //Inclinacion hacia el exterior
+    private Vector3f posicion = new Vector3f(0,5,0);
+    private float pitch = 1;       //Inclinacion arriba abajo
+    private float yaw = 0;      //Derecha o Izquierda
+    private float roll = 0;         //Inclinacion derecha o izquierda
+    private float Velocidad = 1.2f;
     
     public Camara(){
         
     }
-    
+    public Camara(Vector3f posicion){
+        if(posicion.y < 1)  posicion.y = 1;
+        this.posicion = posicion;
+    }
     public void Mover(){
         if(Keyboard.isKeyDown( Keyboard.KEY_S )){
-            posicion.z += 0.02f; 
+            posicion.z += Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_W )){
-            posicion.z -= 0.02f; 
+            posicion.z -= Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_A )){
-            posicion.x -= 0.02f; 
+            posicion.x -= Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_D )){
-            posicion.x += 0.02f; 
+            posicion.x += Velocidad; 
+        }
+        if(Keyboard.isKeyDown( Keyboard.KEY_SPACE)){
+            posicion.y += Velocidad;
+        }
+        if(Keyboard.isKeyDown( Keyboard.KEY_LCONTROL)){
+            if(posicion.y > 2)
+            posicion.y -= Velocidad;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD8 )){
-            posicion.y += 0.02f; 
+            pitch -= 0.7f;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD2 )){
-            posicion.y -= 0.02f; 
+            pitch += 0.7f;
         }
+        if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD4)){
+            yaw -= 0.8f;
+        }
+        if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD6)){
+            yaw += 0.8f;
+        }
+        
     }
 
     public Vector3f getPosicion() {
