@@ -14,32 +14,40 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Camara {
     private Vector3f posicion = new Vector3f(0,5,0);
-    private float pitch = 1;       //Inclinacion arriba abajo
+    private float pitch = 1;       //Inclinacion arriba abajo siendo 0 mirar hacia el frente y arriba -90
     private float yaw = 0;      //Derecha o Izquierda
     private float roll = 0;         //Inclinacion derecha o izquierda
-    private float Velocidad = 1.2f;
+    private float Velocidad = 1.25f;
     
     public Camara(){
         
     }
     public Camara(Vector3f posicion){
-        if(posicion.y < 1)  posicion.y = 1;
+        float limite = 5;
+        if(posicion.y < limite)  posicion.y = limite;
         this.posicion = posicion;
     }
+    
     public void Mover(){
+        float tamanoX = 780;
         if(Keyboard.isKeyDown( Keyboard.KEY_S )){
+            if(posicion.z < -15)
             posicion.z += Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_W )){
+            if(posicion.z > -780)
             posicion.z -= Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_A )){
+            if(posicion.x>-tamanoX)
             posicion.x -= Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_D )){
+            if(posicion.x<tamanoX)
             posicion.x += Velocidad; 
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_SPACE)){
+            if(posicion.y < 30)
             posicion.y += Velocidad;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_LCONTROL)){
@@ -47,9 +55,11 @@ public class Camara {
             posicion.y -= Velocidad;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD8 )){
+            if(pitch>-90)
             pitch -= 0.7f;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD2 )){
+            if(pitch<50)
             pitch += 0.7f;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD4)){
@@ -59,6 +69,7 @@ public class Camara {
             yaw += 0.8f;
         }
         
+        if((yaw>360)||(yaw<-360))   yaw = 0;
     }
 
     public Vector3f getPosicion() {

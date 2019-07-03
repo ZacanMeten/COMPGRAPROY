@@ -13,6 +13,8 @@ import RenderEngine.EntidadRenderizador;
 import Entidades.Entidad;
 import Entidades.Luz;
 import Modelos.ModeloTexturizado;
+import ObjConvertidor.ModeloData;
+import ObjConvertidor.ObjArchivoCargador;
 import RenderEngine.MaestroRenderizador;
 import RenderEngine.OBJcargador;
 import Sombreadores.StaticShader;
@@ -34,19 +36,21 @@ public class Tester {
         ManagerDisplay.crearDisplay();
         Cargador loader = new Cargador();
         
-        ModeloRaw modelo = OBJcargador.cargarOBJmodel("tree", loader);
+        ModeloData data =  ObjArchivoCargador.cargarOBJ("murobasico");
         
-        ModeloTexturizado staticModel = new ModeloTexturizado(modelo, new ModelTexture( loader.cargarTextura("MuroTexture") ));
-        staticModel.getTexture().setHasTransparencia(true);
+        ModeloRaw ArbolModelo = loader.cargarToVAO(data.getVertices(), data.getTexturaCordenadas(), data.getNormales(), data.getIndices());
+        
+        ModeloTexturizado staticModel = new ModeloTexturizado(ArbolModelo, new ModelTexture( loader.cargarTextura("MuroTexture") ));
+        staticModel.getTexture().setHasTransparencia(false);
         staticModel.getTexture().setUsarLuzFalsa(true);
         //Muros
         List<Entidad> entidades = new ArrayList<Entidad>();
         Random ran = new Random();
-        for(int i=0;i<250;i++){
-            entidades.add(new Entidad(staticModel,new Vector3f(ran.nextFloat()*1600 - 800, -2,ran.nextFloat() * -800),0,ran.nextFloat()*90,0,10));
+        for(int i=0;i<150;i++){
+            entidades.add(new Entidad(staticModel,new Vector3f(ran.nextFloat()*1600 - 800, -10,ran.nextFloat() * -800),0,ran.nextFloat()*90,0,13));
         }
         
-        Luz luz = new Luz(new Vector3f(0,50, -400), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
+        Luz luz = new Luz(new Vector3f(0,20000, -400), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
         
         Terreno terreno = new Terreno(0, 0,loader,new ModelTexture(loader.cargarTextura("grass")));
         Terreno terreno2 = new Terreno(1, 0,loader,new ModelTexture(loader.cargarTextura("grass")));
@@ -57,6 +61,7 @@ public class Tester {
         while(!Display.isCloseRequested()){
             //Logica del Juego
             camara.Mover();
+            luz.setPosicion(camara.getPosicion());
             
             //Renderizado
             renderer.procesarTerreno(terreno);

@@ -27,9 +27,13 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class MaestroRenderizador {
     
-    private static final float FOV = 70;
+    private static final float FOV = 100;
     private static final float near_Plane = 0.1f;  //Plano de cerca
     private static final float far_Plane = 1000;  //Plano de lejos
+    
+    private static final float ROJO = 0.5f;
+    private static final float VERDE = 0.5f;
+    private static final float AZUL = 0.5f;
     
     private Matrix4f proyeccionMatriz;
     
@@ -63,14 +67,16 @@ public class MaestroRenderizador {
     public void renderizar(Luz sol, Camara camera){
         preparar(); 
         shader.empezar();
+        shader.cargarColorCielo(ROJO, VERDE, AZUL);
         shader.cargarLuz(sol);
         shader.cargarViewMatrix(camera);
         render.render(entidades);
         shader.parar();
         terrenoShader.empezar();
+        terrenoShader.cargarColorCielo(ROJO, VERDE, AZUL);
         //Posicion Defecto de la luz sobre el terreno
-        Vector3f pos = new Vector3f(0,3500,-400);
-        terrenoShader.cargarLuz(new Luz( pos, new Vector3f(1, 1, 1)));
+        Vector3f pos = new Vector3f(0,20000, camera.getPosicion().z);
+        terrenoShader.cargarLuz(new Luz(pos, new Vector3f(1,1,1)));
         terrenoShader.cargarMatrizVista(camera);
         terrenoRenderer.render(terrenos);
         terrenoShader.parar();
@@ -103,7 +109,7 @@ public class MaestroRenderizador {
     public void preparar(){
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-        GL11.glClearColor(0.5f, 0.5f, 0.5f, 1); //RGB Alpha - COLOR DE FONDO
+        GL11.glClearColor(ROJO,VERDE,AZUL, 1); //RGB Alpha - COLOR DE FONDO
     }
     
     public void crearMatrizProyeccion(){

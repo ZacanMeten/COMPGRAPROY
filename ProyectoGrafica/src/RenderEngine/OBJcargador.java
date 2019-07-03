@@ -12,8 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -22,7 +20,7 @@ import org.lwjgl.util.vector.Vector3f;
  * @author reant
  */
 public class OBJcargador {
-
+    
     public static ModeloRaw cargarOBJmodel(String nombreFile, Cargador loader) {
         FileReader fr = null;
         
@@ -117,6 +115,5 @@ public class OBJcargador {
         normalsArray[currentVerticePuntero*3 + 1] = currentNorm.y;
         normalsArray[currentVerticePuntero*3 + 2] = currentNorm.z;
         
-    }
-    
+    }    
 }

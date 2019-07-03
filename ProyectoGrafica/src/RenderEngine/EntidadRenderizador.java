@@ -35,7 +35,6 @@ public class EntidadRenderizador {
         shader.parar();
     }
     
-
     
     public void render(Map<ModeloTexturizado,List<Entidad>> entidades){
         for(ModeloTexturizado  model : entidades.keySet()){
