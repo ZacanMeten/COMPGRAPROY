@@ -5,6 +5,7 @@
  */
 package Entidades;
 
+import Terrenos.Terreno;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -13,8 +14,8 @@ import org.lwjgl.util.vector.Vector3f;
  * @author reant
  */
 public class Camara {
-    private Vector3f posicion = new Vector3f(0,5,0);
-    private float pitch = 1;       //Inclinacion arriba abajo siendo 0 mirar hacia el frente y arriba -90
+    private Vector3f posicion = new Vector3f(0,8,-10);
+    private float pitch = 0;       //Inclinacion arriba abajo siendo 0 mirar hacia el frente y arriba -90
     private float yaw = 0;      //Derecha o Izquierda
     private float roll = 0;         //Inclinacion derecha o izquierda
     private float Velocidad = 1.25f;
@@ -29,31 +30,42 @@ public class Camara {
     }
     
     public void Mover(){
-        float tamanoX = 780;
+        float AdelanteZ = (float) (Math.cos(Math.toRadians(yaw)) * Velocidad);
+        float AdelanteX = (float) (Math.sin(Math.toRadians(yaw)) * Velocidad);
+        float CostadoDerZ  = (float) (Math.cos(Math.toRadians(yaw+90)) * Velocidad);
+        float CostadoIzqZ  = (float) (Math.sin(Math.toRadians(yaw+90)) * Velocidad);
+        
+        //Ir hacia adelante o atras
         if(Keyboard.isKeyDown( Keyboard.KEY_S )){
-            if(posicion.z < -15)
-            posicion.z += Velocidad; 
+            if(EvaluarZPos())   posicion.z += AdelanteZ;
+            if(EvaluarXPos())   posicion.x -= AdelanteX;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_W )){
-            if(posicion.z > -780)
-            posicion.z -= Velocidad; 
+            if(EvaluarZPos())   posicion.z -= AdelanteZ;
+            if(EvaluarXPos())   posicion.x += AdelanteX;
         }
-        if(Keyboard.isKeyDown( Keyboard.KEY_A )){
-            if(posicion.x>-tamanoX)
-            posicion.x -= Velocidad; 
+        
+        //Ir hacia los costados
+        if(Keyboard.isKeyDown( Keyboard.KEY_A)){
+            if(EvaluarZPos())   posicion.z += CostadoDerZ;
+            if(EvaluarXPos())   posicion.x -= CostadoIzqZ;
         }
-        if(Keyboard.isKeyDown( Keyboard.KEY_D )){
-            if(posicion.x<tamanoX)
-            posicion.x += Velocidad; 
+        if(Keyboard.isKeyDown( Keyboard.KEY_D)){
+            if(EvaluarZPos())   posicion.z -= CostadoDerZ;
+            if(EvaluarXPos())   posicion.x += CostadoIzqZ;
         }
+        
+        //Saltar
         if(Keyboard.isKeyDown( Keyboard.KEY_SPACE)){
             if(posicion.y < 30)
             posicion.y += Velocidad;
         }
         if(Keyboard.isKeyDown( Keyboard.KEY_LCONTROL)){
-            if(posicion.y > 2)
+            if(posicion.y > 5)
             posicion.y -= Velocidad;
         }
+        
+        //Mover punto de la vista
         if(Keyboard.isKeyDown( Keyboard.KEY_NUMPAD8 )){
             if(pitch>-90)
             pitch -= 0.7f;
@@ -69,9 +81,49 @@ public class Camara {
             yaw += 0.8f;
         }
         
-        if((yaw>360)||(yaw<-360))   yaw = 0;
+        System.out.println(posicion.toString());
+        if(yaw>180)   yaw = -180;
+        if(yaw<-180)    yaw = 180;
+        MoverDentroMapa();
+    }
+    
+    private void MoverDentroMapa(){
+        if(posicion.x>0){
+            if(!EvaluarXPos())
+                posicion.x = 789;
+        }else{
+            if(!EvaluarXPos())
+                posicion.x = -789;
+        }
+        
+        if(posicion.z<-400){
+            if(!EvaluarZPos()){
+                posicion.z = -789;
+            }
+        }else{
+            if(!EvaluarZPos())
+                posicion.z = -2;            
+        }
     }
 
+    private boolean EvaluarZPos(){
+        int Limite = 790;
+        if((posicion.z < -1)&&(posicion.z > -Limite)){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+    private boolean EvaluarXPos(){
+        int Limite = 790;
+        if((posicion.x>-Limite)&&(posicion.x<Limite)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
     public Vector3f getPosicion() {
         return posicion;
     }

@@ -25,8 +25,7 @@ public class Luz {
     }
 
     public void setPosicion(Vector3f Pos){
-        this.posicion = new Vector3f(Pos.x,Pos.y+10,Pos.z+1000);
-        System.out.println("Posicion de la Luz: "+this.posicion.toString());
+        this.posicion = new Vector3f(Pos.x,Pos.y+30,Pos.z);
     }
 
     public Vector3f getColor() {

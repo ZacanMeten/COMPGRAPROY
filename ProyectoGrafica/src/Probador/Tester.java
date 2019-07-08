@@ -9,15 +9,12 @@ import Entidades.Camara;
 import RenderEngine.Cargador;
 import RenderEngine.ManagerDisplay;
 import Modelos.ModeloRaw;
-import RenderEngine.EntidadRenderizador;
 import Entidades.Entidad;
 import Entidades.Luz;
 import Modelos.ModeloTexturizado;
 import ObjConvertidor.ModeloData;
 import ObjConvertidor.ObjArchivoCargador;
 import RenderEngine.MaestroRenderizador;
-import RenderEngine.OBJcargador;
-import Sombreadores.StaticShader;
 import Terrenos.Terreno;
 import Texturas.ModelTexture;
 import java.util.ArrayList;
@@ -36,12 +33,12 @@ public class Tester {
         ManagerDisplay.crearDisplay();
         Cargador loader = new Cargador();
         
-        ModeloData data =  ObjArchivoCargador.cargarOBJ("murobasico");
+        ModeloData data =  ObjArchivoCargador.cargarOBJ("Muro");
         
         ModeloRaw ArbolModelo = loader.cargarToVAO(data.getVertices(), data.getTexturaCordenadas(), data.getNormales(), data.getIndices());
         
         ModeloTexturizado staticModel = new ModeloTexturizado(ArbolModelo, new ModelTexture( loader.cargarTextura("MuroTexture") ));
-        staticModel.getTexture().setHasTransparencia(false);
+        staticModel.getTexture().setHasTransparencia(true);
         staticModel.getTexture().setUsarLuzFalsa(true);
         //Muros
         List<Entidad> entidades = new ArrayList<Entidad>();

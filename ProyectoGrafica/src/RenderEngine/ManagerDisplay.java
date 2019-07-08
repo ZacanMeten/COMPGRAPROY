@@ -23,13 +23,12 @@ public class ManagerDisplay {
     private static final int Alto = 720;
     private static final int FPS_cap = 120;    
         
-    public static void crearDisplay(){
-        
+    public static void crearDisplay(){        
         ContextAttribs attribs = new ContextAttribs(3,2);
         attribs.withForwardCompatible(true);
-        attribs.withProfileCore(true);        
+        attribs.withProfileCore(true);
         
-        try{        
+        try{
             Display.setDisplayMode(new DisplayMode(Ancho, Alto));
             Display.create(new PixelFormat(), attribs);
             Display.setLocation(0, 0);
