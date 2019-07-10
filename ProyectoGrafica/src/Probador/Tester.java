@@ -46,12 +46,12 @@ public class Tester {
         ModeloData dataMons = ObjArchivoCargador.cargarOBJ("Monstruo");
         ModeloTexturizado modelMosntruo = new ModeloTexturizado( loader.cargarToVAO(dataMons.getVertices(), dataMons.getTexturaCordenadas(), 
                 dataMons.getNormales(), dataMons.getIndices()),    new ModelTexture(loader.cargarTextura("MonsTexture")) );
-        Monstruo monster = new Monstruo(modelMosntruo, new Vector3f(-800, 15, -800), 0, 0, 0, 4);
+        Monstruo monster = new Monstruo(modelMosntruo, new Vector3f(-100, 10, -200), 0, 0, 0, 16);
         
         //Modelo de los Muros
         ModeloData data =  ObjArchivoCargador.cargarOBJ("murobasico");
-        ModeloRaw ArbolModelo = loader.cargarToVAO(data.getVertices(), data.getTexturaCordenadas(), data.getNormales(), data.getIndices());
-        ModeloTexturizado staticModel = new ModeloTexturizado(ArbolModelo, new ModelTexture( loader.cargarTextura("MuroTexture") ));
+        ModeloRaw MuroModelo = loader.cargarToVAO(data.getVertices(), data.getTexturaCordenadas(), data.getNormales(), data.getIndices());
+        ModeloTexturizado staticModel = new ModeloTexturizado(MuroModelo, new ModelTexture( loader.cargarTextura("MuroTexture") ));
         
         //Carga de Entidades
         List<Entidad> entidades = new ArrayList<Entidad>();
@@ -59,6 +59,13 @@ public class Tester {
         for(int i=0;i<150;i++){
             entidades.add(new Entidad(staticModel,new Vector3f(ran.nextFloat()*1600 - 800, 0,ran.nextFloat()*-800),0,ran.nextFloat()*90,0,5));
         }
+        
+        //Crear Letra
+        ModeloData letra = ObjArchivoCargador.cargarOBJ("ELE");
+        ModeloRaw modeloLetra = loader.cargarToVAO(letra.getVertices(),letra.getTexturaCordenadas(),letra.getNormales(),letra.getIndices() );
+        ModeloTexturizado Letra = new ModeloTexturizado(modeloLetra, new ModelTexture(loader.cargarTextura("amarillo")) );
+        Entidad letraL= new Entidad(Letra, new Vector3f(ran.nextFloat()*1500 - 800,5,ran.nextFloat()*-780), 0, 0, 0, 3);
+        
         
         //Creacion de Luz
         Luz luz = new Luz(new Vector3f(0,20000, -400), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
@@ -75,9 +82,12 @@ public class Tester {
             luz.setPosicion(camara.getPosicion());
             player.moverse();
             
+            letraL.IncrementarRotacion(0, 1, 0);
             //Renderizado
+            
             renderer.procesarEntidad(player);
             renderer.procesarEntidad(monster);
+            renderer.procesarEntidad(letraL);
             
             renderer.procesarTerreno(terreno);
             renderer.procesarTerreno(terreno2);
