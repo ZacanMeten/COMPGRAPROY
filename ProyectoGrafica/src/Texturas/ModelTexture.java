@@ -12,8 +12,8 @@ package Texturas;
 public class ModelTexture {
     private int texturaID;
     
-    private float brilloDamper;
-    private float reflectividad;
+    private float brilloDamper = 1;
+    private float reflectividad = 0;
 
     private boolean hasTransparencia = false;
     private boolean usarLuzFalsa = false;

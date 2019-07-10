@@ -10,7 +10,9 @@ import RenderEngine.Cargador;
 import RenderEngine.ManagerDisplay;
 import Modelos.ModeloRaw;
 import Entidades.Entidad;
+import Entidades.Jugador;
 import Entidades.Luz;
+import Entidades.Monstruo;
 import Modelos.ModeloTexturizado;
 import ObjConvertidor.ModeloData;
 import ObjConvertidor.ObjArchivoCargador;
@@ -33,20 +35,31 @@ public class Tester {
         ManagerDisplay.crearDisplay();
         Cargador loader = new Cargador();
         
-        ModeloData data =  ObjArchivoCargador.cargarOBJ("Muro");
+        //Modelo Jugador
+        ModeloData dataJugador = ObjArchivoCargador.cargarOBJ("Player");
+        ModeloTexturizado modelPlayer = new ModeloTexturizado(loader.cargarToVAO(dataJugador.getVertices(), dataJugador.getTexturaCordenadas(),
+                dataJugador.getNormales(), dataJugador.getIndices()),new ModelTexture(loader.cargarTextura("PlayerTexture")) );
+        Jugador player = new Jugador(modelPlayer, new Vector3f(0,0,-50), 0, 0, 0, 4);
         
+        //Modelo del monstruo
+        ModeloData dataMons = ObjArchivoCargador.cargarOBJ("Monstruo");
+        ModeloTexturizado modelMosntruo = new ModeloTexturizado( loader.cargarToVAO(dataMons.getVertices(), dataMons.getTexturaCordenadas(), 
+                dataMons.getNormales(), dataMons.getIndices()),    new ModelTexture(loader.cargarTextura("MonsTexture")) );
+        Monstruo monster = new Monstruo(modelMosntruo, new Vector3f(-800, 15, -800), 0, 0, 0, 4);
+        
+        //Modelo de los Muros
+        ModeloData data =  ObjArchivoCargador.cargarOBJ("murobasico");
         ModeloRaw ArbolModelo = loader.cargarToVAO(data.getVertices(), data.getTexturaCordenadas(), data.getNormales(), data.getIndices());
-        
         ModeloTexturizado staticModel = new ModeloTexturizado(ArbolModelo, new ModelTexture( loader.cargarTextura("MuroTexture") ));
-        staticModel.getTexture().setHasTransparencia(true);
-        staticModel.getTexture().setUsarLuzFalsa(true);
-        //Muros
+        
+        //Carga de Entidades
         List<Entidad> entidades = new ArrayList<Entidad>();
         Random ran = new Random();
         for(int i=0;i<150;i++){
-            entidades.add(new Entidad(staticModel,new Vector3f(ran.nextFloat()*1600 - 800, -10,ran.nextFloat() * -800),0,ran.nextFloat()*90,0,13));
+            entidades.add(new Entidad(staticModel,new Vector3f(ran.nextFloat()*1600 - 800, 0,ran.nextFloat()*-800),0,ran.nextFloat()*90,0,5));
         }
         
+        //Creacion de Luz
         Luz luz = new Luz(new Vector3f(0,20000, -400), new Vector3f(1, 1, 1));  //Posicion de la luz y su color
         
         Terreno terreno = new Terreno(0, 0,loader,new ModelTexture(loader.cargarTextura("grass")));
@@ -59,8 +72,12 @@ public class Tester {
             //Logica del Juego
             camara.Mover();
             luz.setPosicion(camara.getPosicion());
+            player.moverse();
             
             //Renderizado
+            renderer.procesarEntidad(player);
+            renderer.procesarEntidad(monster);
+            
             renderer.procesarTerreno(terreno);
             renderer.procesarTerreno(terreno2);
             for(Entidad entity:entidades){

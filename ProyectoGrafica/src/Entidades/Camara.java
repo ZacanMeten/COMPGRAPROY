@@ -5,7 +5,8 @@
  */
 package Entidades;
 
-import Terrenos.Terreno;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -13,11 +14,11 @@ import org.lwjgl.util.vector.Vector3f;
  *
  * @author reant
  */
-public class Camara {
+public class Camara{
     private Vector3f posicion = new Vector3f(0,8,-10);
     private float pitch = 0;       //Inclinacion arriba abajo siendo 0 mirar hacia el frente y arriba -90
     private float yaw = 0;      //Derecha o Izquierda
-    private float roll = 0;         //Inclinacion derecha o izquierda
+    private float roll = 0;         //InclinacionZ derecha o izquierda
     private float Velocidad = 1.25f;
     
     public Camara(){
@@ -155,5 +156,5 @@ public class Camara {
     public void setRoll(float roll) {
         this.roll = roll;
     }
-    
+
 }

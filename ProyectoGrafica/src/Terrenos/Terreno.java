@@ -15,7 +15,7 @@ import Texturas.ModelTexture;
  */
 public class Terreno {
     private static final float SIZE = 800; //Tamaño por cuadro de terreno generado
-    private static final int Vertice_Cuenta = 128;
+    private static final int Vertice_Cuenta = 50;
     
     private float x;
     private float z;
