@@ -26,7 +26,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- *
+ * Guia : https://www.youtube.com/playlist?list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP
+ * Proyecto Guia : https://www.dropbox.com/sh/37h3ri1veomo53p/AACoUHiVpvfZfjuHs01CCfwTa?dl=0
  * @author reant
  */
 public class Tester {
